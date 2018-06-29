@@ -48,20 +48,23 @@ def ReadInGffFile(FileToRead):
         SmallNestedList = []
         BasicName = ""
         for line in f:
-            cleanline = line.strip().split()
-            GeneName = cleanline[8] 
-            SplitName = GeneName.split('=')
-            SplitGeneName = SplitName[1]
+            if line.startswith("#"):
+                pass
+            else:
+                cleanline = line.strip().split()
+                GeneName = cleanline[8] 
+                SplitName = GeneName.split('=')
+                SplitGeneName = SplitName[1]
 
-            if len(SmallNestedList) == 0 and len(BasicName) == 0:
-                SmallNestedList.append(cleanline)
-                BasicName = SplitGeneName
-            elif len(SmallNestedList) != 0 and SplitGeneName in BasicName:
-                SmallNestedList.append(cleanline)
-            elif len(SmallNestedList) != 0 and SplitGeneName not in BasicName:
-                ListOfSites.append(SmallNestedList)
-                SmallNestedList = [cleanline]
-                BasicName = SplitGeneName   
+                if len(SmallNestedList) == 0 and len(BasicName) == 0:
+                    SmallNestedList.append(cleanline)
+                    BasicName = SplitGeneName
+                elif len(SmallNestedList) != 0 and SplitGeneName in BasicName:
+                    SmallNestedList.append(cleanline)
+                elif len(SmallNestedList) != 0 and SplitGeneName not in BasicName:
+                    ListOfSites.append(SmallNestedList)
+                    SmallNestedList = [cleanline]
+                    BasicName = SplitGeneName   
     return ListOfSites 
 
 def CreateGffDict(NestedList):
